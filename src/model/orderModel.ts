@@ -1,27 +1,26 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-interface OrderItem {
+interface IOrderItem {
   productId: mongoose.Types.ObjectId;
   quantity: number;
 }
 
 export interface IOrder extends Document {
-  items: OrderItem[];
+  items: IOrderItem[];
   totalPrice: number;
-  createdAt: Date;
 }
 
-const orderItemSchema = new Schema({
-  productId: { type: Schema.Types.ObjectId, ref: "Products", required: true },
-  quantity: { type: Number, required: true, min: 1 }
-});
-
-const orderSchema: Schema = new Schema(
+const orderSchema = new Schema<IOrder>(
   {
-    items: [orderItemSchema],
+    items: [
+      {
+        productId: { type: Schema.Types.ObjectId, ref: "Product", required: true },
+        quantity: { type: Number, required: true },
+      },
+    ],
     totalPrice: { type: Number, required: true },
-    createdAt: { type: Date, default: Date.now }
-  }
+  },
+  { timestamps: true }
 );
 
 const Order = mongoose.model<IOrder>("Order", orderSchema);
