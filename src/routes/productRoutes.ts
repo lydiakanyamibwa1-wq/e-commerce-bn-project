@@ -1,16 +1,15 @@
 import express from 'express';
-const productRouter = express.Router();
 import productController from '../controllers/productController';
-import { get } from 'mongoose';
-const { saveProduct, deleteProduct, updateProduct, getProductbyid, getAllProducts} = productController;
+import validate from '../middleware/validate';
+import { createProductSchema, updateProductSchema } from '../validation/productValidation';
 
+const productRouter = express.Router();
+const { saveProduct, deleteProduct, updateProduct, getProductbyid, getAllProducts } = productController;
 
-productRouter.post('/', saveProduct);
+productRouter.post('/', validate(createProductSchema), saveProduct);
+productRouter.put('/:id', validate(updateProductSchema), updateProduct);
 productRouter.delete('/:id', deleteProduct);
-productRouter.put('/:id', updateProduct);
 productRouter.get('/:id', getProductbyid);
 productRouter.get('/', getAllProducts);
-
-
 
 export default productRouter;

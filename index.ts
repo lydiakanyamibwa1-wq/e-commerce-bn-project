@@ -3,6 +3,7 @@ import productRouter from "./src/routes/productRoutes"
 import cartRoutes from "./src/routes/cartRoutes"  
 import mongoose from "mongoose"
 import orderRoutes from "./src/routes/orderRoutes"
+
 const port = 7000
 const app = express()
 app.use(express.json())

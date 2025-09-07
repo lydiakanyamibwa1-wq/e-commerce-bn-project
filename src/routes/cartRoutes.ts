@@ -1,13 +1,15 @@
 import express from 'express';
-const cartRoutes = express.Router();
 import cartController from '../controllers/cartControllers';
-const { saveCartItem, deleteCartItem, updateCartItem, getAllCartItems, getCartItemById} = cartController;
+import validate from '../middleware/validate';
+import { addCartItemSchema, updateCartItemSchema } from '../validation/cartValidation';
 
-cartRoutes.post('/', saveCartItem);
-cartRoutes.get('/', getAllCartItems);
-cartRoutes.put('/:productId', updateCartItem);
+const cartRoutes = express.Router();
+const { saveCartItem, deleteCartItem, updateCartItem, getAllCartItems, getCartItemById } = cartController;
+
+cartRoutes.post('/', validate(addCartItemSchema), saveCartItem);
+cartRoutes.put('/:productId', validate(updateCartItemSchema), updateCartItem);
 cartRoutes.delete('/:productId', deleteCartItem);
 cartRoutes.get('/:id', getCartItemById);
-
+cartRoutes.get('/', getAllCartItems);
 
 export default cartRoutes;
